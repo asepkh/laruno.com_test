@@ -1,5 +1,8 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+
 import Layout from "../components/layout";
+import Modal from "../components/modal";
+
 import {
   Button,
   Form,
@@ -10,6 +13,10 @@ import {
   Row,
   Col,
   Spinner,
+  ListGroup,
+  ListGroupItem,
+  Badge,
+  Table,
 } from "reactstrap";
 
 import { useQuery, useMutation } from "react-query";
@@ -18,12 +25,13 @@ import axios from "axios";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
+const origin = 457; // Tanggerang selatan
+const weight = 1000; // 1000 Gram
+const courier = "jne"; // JNE
+
 export default function Home() {
-  const headersGET = {
-    headers: {
-      key: "32dd9172c6aeb5d3910ea2c725cc0883",
-    },
-  };
+  const [dataPost, setDataPost] = useState(null);
+  const [modalState, setModal] = useState(null);
 
   const {
     isLoading: loadingProvince,
@@ -31,8 +39,7 @@ export default function Home() {
     data: province,
   } = useQuery(
     "getProvinceData",
-    async () =>
-      await axios.get("https://api.rajaongkir.com/starter/province", headersGET)
+    async () => await axios.get("https://kotaksabun.herokuapp.com/api/provinsi")
   );
 
   const { handleSubmit, getFieldProps, errors, touched, values } = useFormik({
@@ -77,32 +84,18 @@ export default function Home() {
     "getCityData",
     async () =>
       await axios.get(
-        `https://api.rajaongkir.com/starter/city?province=${values.province}`,
-        headersGET
+        `https://kotaksabun.herokuapp.com/api/kota/${values.province}`
       )
   );
 
   const [handleAction, { isLoading, error }] = useMutation(async (values) => {
     try {
-      const config = {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          key: "32dd9172c6aeb5d3910ea2c725cc0883",
-        },
-      };
-
-      let body = new FormData();
-      body.append("origin", values.city);
-      body.append("destination", Math.floor(Math.random() * 20));
-      body.append("weight", 1000);
-      body.append("courier", "jne");
-
-      const res = await axios.post(
-        "https://api.rajaongkir.com/starter/cost",
-        body,
-        config
+      setModal(true);
+      const res = await axios.get(
+        `https://kotaksabun.herokuapp.com/api/ongkos/${origin}/${values.city}/${weight}/${courier}`
       );
-      console.log(res.data.rajaongkir);
+
+      setDataPost(res.data.rajaongkir);
     } catch (err) {
       console.log(err);
     }
@@ -121,6 +114,7 @@ export default function Home() {
           display: "block",
           marginTop: "4rem",
         }}
+        autocomplete="off"
         onSubmit={handleSubmit}
       >
         <h4 style={{ fontWeight: 700, textAlign: "center" }}>
@@ -156,7 +150,6 @@ export default function Home() {
         <FormGroup>
           <Input
             name="phone"
-            type="number"
             placeholder="Phone Number | ex: +6281319796877"
             valid={touched.phone && !errors.phone}
             invalid={touched.phone && !!errors.phone}
@@ -233,11 +226,105 @@ export default function Home() {
           <FormFeedback>{touched.street && errors.street}</FormFeedback>
         </FormGroup>
         <FormGroup>
-          <Button type="submit" color="primary" block>
-            {isLoading ? <Spinner color="light" /> : "Submit"}
+          <Button type="submit" color="primary" size="lg" block>
+            {isLoading ? <Spinner color="light" /> : "Checkout"}
           </Button>
+          <FormText>
+            Origin from Gading Serpong Tanggerang Selatan to Guest Address With
+            JNE Courier
+          </FormText>
         </FormGroup>
       </Form>
+      <Modal modalState={modalState} setModal={setModal} className="modal-xl">
+        {dataPost !== null && (
+          <>
+            <div className={`circle-loader ${!isLoading && "load-complete"}`}>
+              <div
+                className="checkmark draw"
+                style={{ display: !isLoading && "block" }}
+              ></div>
+            </div>
+            <h3
+              style={{
+                color: "#5cb85c",
+                fontWeight: 700,
+                marginTop: 20,
+                textAlign: "center",
+              }}
+            >
+              Thank You, Order Success
+            </h3>
+            <hr />
+            <Row>
+              <Col sm="5">
+                <ListGroup>
+                  <ListGroupItem className="d-flex justify-content-between align-items-center">
+                    {values.firstname + " " + values.lastname}
+                    <Badge color="success" pill>
+                      NAME
+                    </Badge>
+                  </ListGroupItem>
+                  <ListGroupItem className="d-flex justify-content-between align-items-center">
+                    {values.phone}
+                    <Badge color="success" pill>
+                      PHONE
+                    </Badge>
+                  </ListGroupItem>
+                  <ListGroupItem className="d-flex justify-content-between align-items-center">
+                    {dataPost.destination_details.province +
+                      ", " +
+                      dataPost.destination_details.type +
+                      " " +
+                      dataPost.destination_details.city_name +
+                      ", " +
+                      values.street}
+                    <Badge color="success" pill>
+                      ADDRESS
+                    </Badge>
+                  </ListGroupItem>
+                </ListGroup>
+              </Col>
+              <Col sm="7">
+                <Table striped>
+                  <thead>
+                    <tr>
+                      <th>Service</th>
+                      <th>Cost</th>
+                      <th style={{ textAlign: "center" }}>Estimated Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {dataPost.results[0].costs.map((res, key) => (
+                      <tr>
+                        <td key={key}>
+                          <b>JNE {res.service}</b> ({res.description})
+                        </td>
+                        <td style={{ fontWeight: 700 }}>
+                          Rp.
+                          {res.cost[0].value
+                            .toString()
+                            .split("")
+                            .reverse()
+                            .join("")
+                            .match(/\d{1,3}/g)
+                            .join(".")
+                            .split("")
+                            .reverse()
+                            .join("")}
+                          ,-
+                        </td>
+                        <td style={{ textAlign: "center" }}>
+                          {res.cost[0].etd} Day
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </Col>
+            </Row>
+          </>
+        )}
+      </Modal>
     </Layout>
   );
 }
