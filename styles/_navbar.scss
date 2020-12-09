@@ -1,0 +1,22 @@
+.navbar {
+  .nav-item {
+    font-size: 1.1rem;
+    padding-left: 0.5rem;
+    padding-right: 0.75rem;
+  }
+  .navbar-brand {
+    font-weight: 700;
+  }
+  .nav-link {
+    &:hover,
+    &:focus,
+    &:active {
+      color: white !important;
+      font-weight: 700;
+    }
+  }
+}
+
+.navbar {
+  border-radius: 0 !important;
+}

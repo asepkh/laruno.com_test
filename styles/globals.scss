@@ -1,0 +1,10 @@
+@import "./_navbar.scss";
+
+body {
+  background-color: "white";
+}
+
+.invalid-tooltip {
+  top: unset !important;
+  left: unset !important;
+}

@@ -1,65 +1,27 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import ReactPlayer from "react-player/youtube";
+import Layout from "../components/layout";
 
 export default function Home() {
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
+    <Layout animation={0}>
+      <center>
+        <h4 style={{ fontWeight: 700 }}>
+          React Frontend Developer - Asep Khairul Anam
+        </h4>
+        <ReactPlayer
+          url="https://www.youtube.com/watch?v=nN7ngcJdOoI"
+          width="80%"
+          height="50vh"
+          controls={true}
+          className="mt-3"
+        />
+        <p className="mt-4" style={{ width: "80%", fontWeight: 600 }}>
+          I am an Full-Stack Javascript Developer who has a desire to explore
+          something new related to technology and startups. want to work with
+          professionals to improve my skills, compete in the era of industry 4.0
+          and provide more benefits for me and the company
         </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
+      </center>
+    </Layout>
+  );
 }
