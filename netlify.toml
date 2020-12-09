@@ -1,4 +1,4 @@
 [build]
-command   = "yarn build"
+command   = "yarn postbuild"
 functions = "out_functions"
 publish   = "out_publish"
