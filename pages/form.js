@@ -32,7 +32,7 @@ export default function Home() {
   } = useQuery(
     "getProvinceData",
     async () =>
-      await axios.get("http://api.rajaongkir.com/starter/province", headersGET)
+      await axios.get("https://api.rajaongkir.com/starter/province", headersGET)
   );
 
   const { handleSubmit, getFieldProps, errors, touched, values } = useFormik({
@@ -77,7 +77,7 @@ export default function Home() {
     "getCityData",
     async () =>
       await axios.get(
-        `http://api.rajaongkir.com/starter/city?province=${values.province}`,
+        `https://api.rajaongkir.com/starter/city?province=${values.province}`,
         headersGET
       )
   );
@@ -87,6 +87,7 @@ export default function Home() {
       const config = {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
+          key: "32dd9172c6aeb5d3910ea2c725cc0883",
         },
       };
 
