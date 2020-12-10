@@ -2,9 +2,9 @@ import Head from "next/head";
 import PropTypes from "prop-types";
 
 import { Container } from "reactstrap";
-import Navbar from "./navbar";
-
 import { motion } from "framer-motion";
+
+import Navbar from "../navbar";
 
 const animationList = [
   {
@@ -12,7 +12,7 @@ const animationList = [
     exit: { opacity: 0, x: -1000 },
   },
   {
-    initial: { opacity: 0, x: -1200 },
+    initial: { opacity: 0, x: 1200 },
     exit: { opacity: 0, x: 1000 },
   },
 ];
@@ -44,6 +44,6 @@ Layout.PropTypes = {
 };
 
 Layout.defaultProps = {
-  title: "Laruno.com Test",
+  title: "My Resume",
   children: null,
 };

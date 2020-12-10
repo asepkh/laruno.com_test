@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
 
 import Layout from "../components/layout";
-import Modal from "../components/modal";
+import { Modal } from "../components/modal";
+import { Input } from "../components/form";
 
 import {
   Button,
   Form,
-  FormGroup,
-  Input,
-  FormText,
-  FormFeedback,
   Row,
   Col,
   Spinner,
@@ -17,6 +14,8 @@ import {
   ListGroupItem,
   Badge,
   Table,
+  FormGroup,
+  FormText,
 } from "reactstrap";
 
 import { useQuery, useMutation } from "react-query";
@@ -29,7 +28,7 @@ const origin = 457; // Tanggerang selatan
 const weight = 1000; // 1000 Gram
 const courier = "jne"; // JNE
 
-export default function Home() {
+export default function FormPages() {
   const [dataPost, setDataPost] = useState(null);
   const [modalState, setModal] = useState(null);
 
@@ -106,131 +105,108 @@ export default function Home() {
   }, [values.province]);
 
   return (
-    <Layout title="Laruno.com Test | Form" animation={1}>
-      <Form
-        style={{
-          maxWidth: 576,
-          margin: "auto",
-          display: "block",
-          marginTop: "4rem",
-        }}
-        autocomplete="off"
-        onSubmit={handleSubmit}
-      >
+    <Layout title="RajaOngkir Consume API" animation={1}>
+      <Form className="custom-form" autoComplete="off" onSubmit={handleSubmit}>
         <h4 style={{ fontWeight: 700, textAlign: "center" }}>
           Consume API from RajaOngkir
         </h4>
         <Row className="mt-4">
           <Col>
-            <FormGroup>
-              <Input
-                name="firstname"
-                placeholder="First Name"
-                valid={touched.firstname && !errors.firstname}
-                invalid={touched.firstname && !!errors.firstname}
-                {...getFieldProps("firstname")}
-              />
-              <FormFeedback>
-                {touched.firstname && errors.firstname}
-              </FormFeedback>
-            </FormGroup>
+            <Input
+              name="firstname"
+              placeholder="First Name"
+              valid={touched.firstname && !errors.firstname}
+              invalid={touched.firstname && !!errors.firstname}
+              feedback={touched.firstname && errors.firstname}
+              {...getFieldProps("firstname")}
+            />
           </Col>
           <Col>
-            <FormGroup>
-              <Input
-                name="lastname"
-                placeholder="Last Name (Optional)"
-                valid={touched.lastname && !errors.lastname}
-                {...getFieldProps("lastname")}
-              />
-              <FormText>* Optional</FormText>
-            </FormGroup>
+            <Input
+              name="lastname"
+              placeholder="Last Name (Optional)"
+              valid={touched.lastname && !errors.lastname}
+              note="* Optional"
+              {...getFieldProps("lastname")}
+            />
           </Col>
         </Row>
-        <FormGroup>
-          <Input
-            name="phone"
-            placeholder="Phone Number | ex: +6281319796877"
-            valid={touched.phone && !errors.phone}
-            invalid={touched.phone && !!errors.phone}
-            {...getFieldProps("phone")}
-          />
-          <FormFeedback>{touched.phone && errors.phone}</FormFeedback>
-        </FormGroup>
+        <Input
+          name="phone"
+          placeholder="Phone Number | ex: +6281319796877"
+          valid={touched.phone && !errors.phone}
+          invalid={touched.phone && !!errors.phone}
+          feedback={touched.phone && errors.phone}
+          {...getFieldProps("phone")}
+        />
         <Row className="mt-1">
           <Col>
-            <FormGroup>
-              <Input
-                type="select"
-                name="province"
-                placeholder="Province"
-                valid={touched.province && !errors.province}
-                invalid={touched.province && !!errors.province}
-                {...getFieldProps("province")}
-              >
-                <option>Select a province</option>
-                {!loadingProvince && !errorProvince ? (
-                  province.data.rajaongkir.results.length > 0 ? (
-                    province.data.rajaongkir.results.map((res) => (
-                      <option value={res.province_id}>{res.province}</option>
-                    ))
-                  ) : (
-                    <option>Loading .......</option>
-                  )
+            <Input
+              type="select"
+              name="province"
+              placeholder="Province"
+              valid={touched.province && !errors.province}
+              invalid={touched.province && !!errors.province}
+              feedback={touched.province && errors.province}
+              {...getFieldProps("province")}
+            >
+              <option>Select a province</option>
+              {!loadingProvince && !errorProvince ? (
+                province.data.rajaongkir.results.length > 0 ? (
+                  province.data.rajaongkir.results.map((res) => (
+                    <option value={res.province_id}>{res.province}</option>
+                  ))
                 ) : (
                   <option>Loading .......</option>
-                )}
-              </Input>
-              <FormFeedback>{touched.province && errors.province}</FormFeedback>
-            </FormGroup>
+                )
+              ) : (
+                <option>Loading .......</option>
+              )}
+            </Input>
           </Col>
           <Col>
-            <FormGroup>
-              <Input
-                type="select"
-                name="city"
-                placeholder="City"
-                valid={touched.city && !errors.city}
-                invalid={touched.city && !!errors.city}
-                {...getFieldProps("city")}
-                disabled={!values.province}
-              >
-                <option>Select a city</option>
-                {!loadingCity && !errorCity ? (
-                  city.data.rajaongkir.results.length > 0 ? (
-                    city.data.rajaongkir.results.map((res) => (
-                      <option value={res.city_id}>
-                        {res.type + " " + res.city_name}
-                      </option>
-                    ))
-                  ) : (
-                    <option>Loading .......</option>
-                  )
+            <Input
+              type="select"
+              name="city"
+              placeholder="City"
+              valid={touched.city && !errors.city}
+              invalid={touched.city && !!errors.city}
+              feedback={touched.city && errors.city}
+              disabled={!values.province}
+              {...getFieldProps("city")}
+            >
+              <option>Select a city</option>
+              {!loadingCity && !errorCity ? (
+                city.data.rajaongkir.results.length > 0 ? (
+                  city.data.rajaongkir.results.map((res) => (
+                    <option value={res.city_id}>
+                      {res.type + " " + res.city_name}
+                    </option>
+                  ))
                 ) : (
                   <option>Loading .......</option>
-                )}
-              </Input>
-              <FormFeedback>{touched.city && errors.city}</FormFeedback>
-            </FormGroup>
+                )
+              ) : (
+                <option>Loading .......</option>
+              )}
+            </Input>
           </Col>
         </Row>
-        <FormGroup>
-          <Input
-            type="textarea"
-            name="street"
-            placeholder="Street address | ex: JL. Pegangsaan Timur No.62"
-            valid={touched.street && !errors.street}
-            invalid={touched.street && !!errors.street}
-            {...getFieldProps("street")}
-          />
-          <FormFeedback>{touched.street && errors.street}</FormFeedback>
-        </FormGroup>
+        <Input
+          type="textarea"
+          name="street"
+          placeholder="Street address | ex: JL. Pegangsaan Timur No.62"
+          valid={touched.street && !errors.street}
+          invalid={touched.street && !!errors.street}
+          feedback={touched.street && errors.street}
+          {...getFieldProps("street")}
+        />
         <FormGroup>
           <Button type="submit" color="primary" size="lg" block>
             {isLoading ? <Spinner color="light" /> : "Checkout"}
           </Button>
           <FormText>
-            Origin from Gading Serpong Tanggerang Selatan to Guest Address With
+            Origin from Gading Serpong, Tanggerang Selatan to Guest Address With
             JNE Courier
           </FormText>
         </FormGroup>

@@ -15,7 +15,7 @@ export default function Home() {
           controls={true}
           className="mt-3"
         />
-        <p className="mt-4" style={{ width: "80%", fontWeight: 600 }}>
+        <p className="mt-4" style={{ maxWidth: 976, fontWeight: 500 }}>
           I am an Full-Stack Javascript Developer who has a desire to explore
           something new related to technology and startups. want to work with
           professionals to improve my skills, compete in the era of industry 4.0

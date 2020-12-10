@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import Link from "next/link";
 import {
@@ -44,10 +44,10 @@ Header.propTypes = {
 };
 
 Header.defaultProps = {
-  title: "Laruno.com Test",
+  title: "My Resume",
   items: [
     {
-      title: "Form Consume API",
+      title: "RajaOngkir Consume API",
       href: "/form",
     },
   ],
