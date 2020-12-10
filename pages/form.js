@@ -294,30 +294,40 @@ export default function Home() {
                     </tr>
                   </thead>
                   <tbody>
-                    {dataPost.results[0].costs.map((res, key) => (
+                    {dataPost.results[0].costs.length > 0 ? (
+                      dataPost.results[0].costs.map((res, key) => (
+                        <tr>
+                          <td key={key}>
+                            <b>JNE {res.service}</b> ({res.description})
+                          </td>
+                          <td style={{ fontWeight: 700 }}>
+                            Rp.
+                            {res.cost[0].value
+                              .toString()
+                              .split("")
+                              .reverse()
+                              .join("")
+                              .match(/\d{1,3}/g)
+                              .join(".")
+                              .split("")
+                              .reverse()
+                              .join("")}
+                            ,-
+                          </td>
+                          <td style={{ textAlign: "center" }}>
+                            {res.cost[0].etd} Day
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
                       <tr>
-                        <td key={key}>
-                          <b>JNE {res.service}</b> ({res.description})
+                        <td>
+                          <b>TIDAK TERSEDIA</b>
                         </td>
-                        <td style={{ fontWeight: 700 }}>
-                          Rp.
-                          {res.cost[0].value
-                            .toString()
-                            .split("")
-                            .reverse()
-                            .join("")
-                            .match(/\d{1,3}/g)
-                            .join(".")
-                            .split("")
-                            .reverse()
-                            .join("")}
-                          ,-
-                        </td>
-                        <td style={{ textAlign: "center" }}>
-                          {res.cost[0].etd} Day
-                        </td>
+                        <td>-</td>
+                        <td style={{ textAlign: "center" }}>-</td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </Table>
               </Col>

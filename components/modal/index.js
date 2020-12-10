@@ -1,4 +1,4 @@
-import { Modal, ModalBody } from "reactstrap";
+import { Modal, ModalBody, Button } from "reactstrap";
 
 const CustomModal = (props) => {
   const { modalState, setModal, children, className } = props;
@@ -6,7 +6,10 @@ const CustomModal = (props) => {
 
   return (
     <Modal isOpen={modalState} toggle={toggle} className={className}>
-      <ModalBody>{children}</ModalBody>
+      <ModalBody>
+        <Button close onClick={toggle} />
+        {children}
+      </ModalBody>
     </Modal>
   );
 };

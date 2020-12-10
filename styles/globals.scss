@@ -9,3 +9,9 @@ body {
   top: unset !important;
   left: unset !important;
 }
+
+button {
+  &:focus {
+    outline: 0 !important;
+  }
+}
